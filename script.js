@@ -9,6 +9,7 @@ const generateButton = document.getElementById("generate-btn");
 const copyButton = document.getElementById("copy-btn");
 const strengthBar = document.querySelector(".strength-bar");
 const strengthText = document.querySelector(".strength-container p");
+const strengthLabel = document.getElementById("strength-label")
 
 
 
@@ -53,7 +54,7 @@ function updateStrengthMeter(password){
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumbers = /[0-9]/.test(password);
-    const hasSymbols = /!@#$%^^&*()-_+=[]{}|:;.,<>?/.test(password);
+    const hasSymbols = /[!@#$%^^&*()-_+={}|:;.,<>?]/.test(password);
 
     let strengthScore = 0;
 
@@ -86,6 +87,7 @@ function updateStrengthMeter(password){
     }
 
     strengthBar.style.backgroundColor = barColor;
+    strengthLabel.textContent = strengthLabelText;
 }
 
 function createRandomPassword(
@@ -108,4 +110,29 @@ for (let i = 0; i < length; i++){
     password += allCharacters[randomIndex];
 }
 return password;
+        }
+
+        window.addEventListener("DOMContentLoaded", makePassword);
+
+        copyButton.addEventListener("click", () => {
+            if (!passwordInput.value)
+                return
+
+            navigator.clipboard.writeText(passwordInput.value)
+            .then(() => showCopySuccess())
+            .catch((error) => console.log ("Could not copy:", error));
+        });
+
+        function showCopySuccess(){
+            copyButton.classList.remove("far","fa-copy");
+            copyButton.classList.add("fas","fa-check");
+            copyButton.style.color = "#48bb78";
+        
+
+        setTimeout(() =>{
+            copyButton.classList.remove("fas", "fa-check")
+            copyButton.classList.add("far", "fa-copy")
+            copyButton.style.color = "";
+
+        }, 1500);
         }
